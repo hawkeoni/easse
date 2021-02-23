@@ -117,13 +117,12 @@ def compute_ngram_stats(
     ):
         orig_ngrams = extract_ngrams(orig_sent)
         sys_ngrams = extract_ngrams(sys_sent)
-
+        ref_sents = [sent for sent in ref_sents if sent.strip() != '']
         refs_ngrams = [Counter() for _ in range(NGRAM_ORDER)]
         for ref_sent in ref_sents:
             ref_ngrams = extract_ngrams(ref_sent)
             for n in range(NGRAM_ORDER):
                 refs_ngrams[n] += ref_ngrams[n]
-
         num_refs = len(ref_sents)
         for n in range(NGRAM_ORDER):
             # ADD
@@ -255,7 +254,6 @@ def get_corpus_sari_operation_scores(orig_sents: List[str], sys_sents: List[str]
         [utils_prep.normalize(sent, lowercase, tokenizer) for sent in ref_sents]
         for ref_sents in refs_sents
     ]
-
     stats = compute_ngram_stats(orig_sents, sys_sents, refs_sents)
 
     if not use_paper_version:
